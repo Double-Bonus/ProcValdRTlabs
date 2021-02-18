@@ -8,7 +8,7 @@ function distace = find_optimal_d(roof, wall, floor, window)
 
     TEMP_INSIDE = 22;
     TEMP_OUTSIDE = B - A;
-    ENERGY_PRICE = 0.05 / 1000; %energijos kaina 0,05 EUR/kWh {ENERGY NEED TO BE IN WATTS?}
+    ENERGY_PRICE_W = 0.05 / 1000; %energijos kaina 0,05 EUR/kWh {ENERGY NEED TO BE IN WATTS?}
     LABOR_COST = 50; %Apšiltinimo sluoksnio darb? kainas priimti 0,5 Eur / cm.
 
     PRICE_ROOF_MATT = 30;
@@ -16,7 +16,8 @@ function distace = find_optimal_d(roof, wall, floor, window)
     PRICE_FLOOR_MATT = 70;
     PRICE_WINDOW_MATT = 7500;
     TIME_HR = 180 * 24 * 10;
-
+    increasing = 1;
+    
     area_S = [roof, wall, floor, window];
     temp_diff = TEMP_INSIDE - TEMP_OUTSIDE;
 
@@ -37,8 +38,15 @@ function distace = find_optimal_d(roof, wall, floor, window)
 
     
     energy_loss = [roof_U.*area_S(1); wall_U.*area_S(2); floor_U.*area_S(3); windows_U.*area_S(4)];
-    total_en_price = energy_loss * TIME_HR * temp_diff * ENERGY_PRICE * 2.39;
-    
+    if increasing
+        tempLost = energy_loss;
+        for indx = 1:10
+            total_en_price = tempLost * (TIME_HR/10) * temp_diff * ENERGY_PRICE_W;
+            tempLost = tempLost*1.091;
+        end
+    else 
+        total_en_price = energy_loss * TIME_HR * temp_diff * ENERGY_PRICE_W;
+    end
     total_build_prices = [price_roof; price_wall; price_floor; price_window];
     %total_build_prices = {price_roof, price_wall, price_floor, price_window};
 
@@ -49,8 +57,45 @@ function distace = find_optimal_d(roof, wall, floor, window)
    % out = [X(ii)',Y(:)]
         %[size, inx] = min(S);
         
+    distace = d_roof(ii); % return vector for optimal parameters
+    
+    
 
-    distace = d_roof(ii);
+    if 1
+        sum_total_build = 0;
+        sum_en = 0;
+        for jj = 1:4
+            best_loss_en_W = energy_loss(jj, ii(jj)) * TIME_HR * temp_diff
+            sum_total_build = sum_total_build + total_build_prices(jj, ii(jj));
+            sum_en = sum_en + best_loss_en_W;
+        end
+        fprintf('Total build price of optimal d %f\n', sum_total_build);
+        
+        
+        %%% ROI
+            back_price = sum_total_build;
+            back_el_price_year =  sum_en / 10 * ENERGY_PRICE_W;
+            year = 0;
+            
+            %YEAH ITS HARDCODED NEEDS CHANNING !!!!!!!!!!!!!!!!!
+            B_class_cost = 28217;
+            B_class_en_cost = 1874;
+
+            test = 1;
+            while (B_class_cost < back_price)
+                year = year + 1;
+                back_price = back_price + back_el_price_year;
+                B_class_cost = B_class_cost + B_class_en_cost;
+                if increasing
+                    back_el_price_year = back_el_price_year*1.091;
+                    B_class_en_cost = B_class_en_cost*1.091;
+                    test = test*1.091;
+                end
+            end
+            fprintf('Return year %d\n', year);
+        
+    end
+    
 
 
 end
