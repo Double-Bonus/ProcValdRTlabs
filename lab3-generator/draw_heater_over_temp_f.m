@@ -1,12 +1,14 @@
-function heater_pow = calculate_heater_power(area, temp_diff)
+function heater_pow = draw_heater_over_temp_f(area, temp_inside)
+
+
+temp_outside = -30:temp_inside;
+temp_diff = temp_inside - temp_outside;
+
+
 
     ROOM_HEIGHT_M = 2.5; 
     AIR_DENSITY = 1.293; % kg/m3
     HEAT_CAPACITY = 0.28; % Wh/(kg*K)
-    
-    
-    
-    
     
     %calculating house_power_loss
     roof_U =    0.16;
@@ -33,6 +35,8 @@ windows_energy_loss = windows_U.*area(4) * temp_diff;
     recup_loss = (area(3) * ROOM_HEIGHT_M * AIR_DENSITY * HEAT_CAPACITY * temp_diff * 0.15);
 
 
-    heater_pow = (house_power_loss + recup_loss) / 0.95;
+    heater_pow = house_power_loss + recup_loss;
+    
+    plot(temp_outside,heater_pow)
 
 end
