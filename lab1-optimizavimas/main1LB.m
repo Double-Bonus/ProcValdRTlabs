@@ -1,7 +1,7 @@
-%Simple optimization problem
-% Lab work 2021
+% Simple optimization problem
+% Lab work 2021, PVRT
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-clc, clear
+clc, clear, close all;
 
 [volume, metal_price, labor_cost] = get_user_input();
 
@@ -12,10 +12,10 @@ toc;
 fprintf('Optimal S: %f\n', tank_size);
 fprintf('Optimal R: %f\n', tank_radius);
 
-[P_min, radius] = optimize_cost_f(volume, metal_price, labor_cost);
+[price_min, radius] = optimize_cost_f(volume, metal_price, labor_cost);
 fprintf('---------------------------\n');
-fprintf('Final price: %f\n', P_min);
-fprintf('Optimalus R: %f\n', radius);
+fprintf('Final price: %f\n', price_min);
+fprintf('Optimal R: %f\n', radius);
 
 [tank_open_size, tank_open_radius] = optimize_size_open_f(volume);
 fprintf('---------------------------\n');
