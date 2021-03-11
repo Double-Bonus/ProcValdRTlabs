@@ -1,20 +1,15 @@
 %%%%%%%%%%%%%%%%%%
-%lab 2, energy classes of houses
-%2021
+% lab 2, energy classes of houses
+% 2021, PVRT
 %%%%%%%%%%%%%%%%%%
+clear, clc, close all;
 
-clear, clc
-
-%C 8390
-A = 8;
-B = 3;
-C = 9;
-D = 10;
+[A, B, C, D] = get_vitko_code_f();
 
 TEMP_INSIDE = 22;
 TEMP_OUTSIDE = B - A;
-ENERGY_PRICE = 0.05 / 1000; % 0,05 EUR/kWh (in watts)
-LABOR_COST = 50; % 50 Eur/m^3, insulation labor cost
+ENERGY_PRICE = 0.05 / 1000;     % 0,05 EUR/kWh (in watts)
+LABOR_COST = 50;                % 50 Eur/m^3, insulation labor cost
 PRICE_ROOF_MATT = 30;
 PRICE_WALL_MATT = 60;
 PRICE_FLOOR_MATT = 70;
@@ -46,12 +41,14 @@ total_build_prices = price_roof + price_wall + price_floor + price_window;
 
 energy_loss = roof_U.*area(1) + wall_U.*area(2) + floor_U.*area(3) + windows_U.*area(4);
 
-roof_energy_loss = roof_U.*area(1) * TIME_HR * temp_diff;
-wall_energy_loss = wall_U.*area(2) * TIME_HR * temp_diff;
-floor_energy_loss = floor_U.*area(3) * TIME_HR * temp_diff;
-windows_energy_loss = windows_U.*area(4) * TIME_HR * temp_diff;
+% Get energy losses for each class and each element to fill up table
+roof_energy_loss_W = roof_U.*area(1) * TIME_HR * temp_diff;
+wall_energy_loss_W = wall_U.*area(2) * TIME_HR * temp_diff;
+floor_energy_loss_W = floor_U.*area(3) * TIME_HR * temp_diff;
+windows_energy_loss_W = windows_U.*area(4) * TIME_HR * temp_diff;
 
-total_en_price = energy_loss * TIME_HR * temp_diff * ENERGY_PRICE;
+total_heat_loss_W = energy_loss * TIME_HR * temp_diff;
+total_en_price = total_heat_loss_W * ENERGY_PRICE;
 %fprintf('%f/n', total_build_prices(1));
 
 fprintf('          B     A     A+      A++    passive\n');
@@ -59,33 +56,14 @@ fprintf(' %f, %f %f %f %f \n', total_build_prices);
 
 total = total_build_prices + total_en_price;
 
-payback_year = [0 0 0 0 0];
-is_back =      [0 0 0 0 0];
-
-back_price = total_build_prices;
-year = 0;
-
-total_en_price = energy_loss * 180 * 24 * temp_diff * ENERGY_PRICE;
-
-while (sum(is_back) < 4)
-    year = year + 1;
-    back_price = back_price + total_en_price;
-    for i = 2:5
-        if( ~is_back(i) && back_price(i) < back_price(1) )
-            payback_year(i) = year;
-            is_back(i) = 1;
-        end
-    end
-    %total_en_price = total_en_price*1.091;
-end
-
-payback_year
-
 
 distace_meters = find_optimal_d(area(1), area(2),area(3),area(4))
 
-optimal_d = zeros(1,4); % delete
 
+lol = calculate_break_even_year(total_heat_loss_W/10, total_build_prices, false); % if price isn't incresing
+
+
+lol2 = calculate_break_even_year(total_heat_loss_W/10, total_build_prices, true); % if price increses
 
 
 

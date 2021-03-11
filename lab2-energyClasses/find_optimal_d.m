@@ -1,9 +1,8 @@
 %input area of roof wall floor and windows in meters.
 %return optimal insulation size in meters for each part 
 function distace = find_optimal_d(roof, wall, floor, window)
-    A = 8;
-    B = 3;
 
+    [A, B, ~, ~] = get_vitko_code_f();
     TEMP_INSIDE = 22;
     TEMP_OUTSIDE = B - A;
     ENERGY_PRICE_W = 0.05 / 1000;
@@ -13,9 +12,8 @@ function distace = find_optimal_d(roof, wall, floor, window)
     PRICE_WALL_MATT = 60;
     PRICE_FLOOR_MATT = 70;
     PRICE_WINDOW_MATT = 7500;
-    TIME_HR = 180 * 24 * 10; % 10 years in hours
-    increasing = 1; % set flag to 1 if electricity price is incresing
-    POINT_CNT = 5000; % presition for calculations
+    TIME_HR = 180 * 24 * 10;        % 10 years in hours
+    POINT_CNT = 5000;               % presition for calculations
     
     area_S = [roof, wall, floor, window];
     temp_diff = TEMP_INSIDE - TEMP_OUTSIDE;
@@ -25,11 +23,10 @@ function distace = find_optimal_d(roof, wall, floor, window)
     d_floor_B = 0.1240;
     d_window_B = 0.0169;
         
-    d_roof = linspace(d_roof_B, 4*d_roof_B, POINT_CNT);
-    d_wall = linspace(d_wall_B, 4*d_wall_B, POINT_CNT);
-    d_floor = linspace(d_floor_B, 4*d_floor_B, POINT_CNT);
-    d_window = linspace(d_window_B, 4*d_window_B, POINT_CNT);
-    
+    d_roof = linspace(0.001, 4*d_roof_B, POINT_CNT);
+    d_wall = linspace(0.001, 4*d_wall_B, POINT_CNT);
+    d_floor = linspace(0.001, 4*d_floor_B, POINT_CNT);
+    d_window = linspace(0.001, 4*d_window_B, POINT_CNT);
     
     price_roof = d_roof * area_S(1) * (PRICE_ROOF_MATT + LABOR_COST);
     price_wall = d_wall * area_S(2) * (PRICE_WALL_MATT + LABOR_COST);
@@ -42,15 +39,7 @@ function distace = find_optimal_d(roof, wall, floor, window)
     windows_U = 0.027 ./ d_window;
 
     energy_loss = [roof_U.*area_S(1); wall_U.*area_S(2); floor_U.*area_S(3); windows_U.*area_S(4)];
-    if increasing
-        tempLost = energy_loss;
-        for indx = 1:10
-            total_en_price = tempLost * (TIME_HR/10) * temp_diff * ENERGY_PRICE_W;
-            tempLost = tempLost*1.091;
-        end
-    else 
-        total_en_price = energy_loss * TIME_HR * temp_diff * ENERGY_PRICE_W;
-    end
+    total_en_price = energy_loss * TIME_HR * temp_diff * ENERGY_PRICE_W;
     total_build_prices = [price_roof; price_wall; price_floor; price_window];
 
     total = total_build_prices + total_en_price;

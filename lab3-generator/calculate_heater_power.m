@@ -21,6 +21,8 @@ function heater_pow = calculate_heater_power(area, temp_diff)
     d_floor = conductivity_q(3) / floor_U;
     d_window = conductivity_q(4) / windows_U;
 
+    %JEI IMAM MAZIAU UZ B KLASE ISKART D GALM PASILOADINTI
+
 %energy_loss = roof_U.*area(1) + wall_U.*area(2) + floor_U.*area(3) + windows_U.*area(4);
 
 roof_energy_loss = roof_U.*area(1) * temp_diff;
