@@ -1,6 +1,6 @@
 %input area of roof wall floor and windows in meters.
 %return optimal insulation size in meters for each part 
-function distace = find_optimal_d(roof, wall, floor, window)
+function distace = find_optimal_d_f(roof, wall, floor, window)
 
     [A, B, ~, ~] = get_vitko_code_f();
     TEMP_INSIDE = 22;
@@ -13,7 +13,7 @@ function distace = find_optimal_d(roof, wall, floor, window)
     PRICE_FLOOR_MATT = 70;
     PRICE_WINDOW_MATT = 7500;
     TIME_HR = 180 * 24 * 10;        % 10 years in hours
-    POINT_CNT = 5000;               % presition for calculations
+    POINT_CNT = 5000;               % precision for calculations
     
     area_S = [roof, wall, floor, window];
     temp_diff = TEMP_INSIDE - TEMP_OUTSIDE;
@@ -44,45 +44,8 @@ function distace = find_optimal_d(roof, wall, floor, window)
 
     total = total_build_prices + total_en_price;
     
-    [~,ii] = min(total,[],2);
+    [~,ii] = min(total,[],2); %find min for each of 4 structures
       
     distace = [d_roof(ii(1)), d_wall(ii(2)), d_floor(ii(3)), d_window(ii(4))];
 
-    
-    
-
-    if 0
-        sum_total_build = 0;
-        sum_en = 0;
-        for jj = 1:4
-            best_loss_en_W = energy_loss(jj, ii(jj)) * TIME_HR * temp_diff
-            sum_total_build = sum_total_build + total_build_prices(jj, ii(jj));
-            sum_en = sum_en + best_loss_en_W;
-        end
-        fprintf('Total build price of optimal d %f\n', sum_total_build);       
-        %%% ROI
-            back_price = sum_total_build;
-            back_el_price_year =  sum_en / 10 * ENERGY_PRICE_W;
-            year = 0;
-            
-            %YEAH ITS HARDCODED NEEDS CHANNING !!!!!!!!!!!!!!!!!
-            B_class_cost = 28217;
-            B_class_en_cost = 1874;
-
-            test = 1;
-            while (B_class_cost < back_price)
-                year = year + 1;
-                back_price = back_price + back_el_price_year;
-                B_class_cost = B_class_cost + B_class_en_cost;
-                if increasing
-                    back_el_price_year = back_el_price_year*1.091;
-                    B_class_en_cost = B_class_en_cost*1.091;
-                    test = test*1.091;
-                end
-            end
-            fprintf('Return year %d\n', year);    
-    end
-    
-
-
-end
+end 
