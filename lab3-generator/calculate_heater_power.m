@@ -5,9 +5,6 @@ function heater_pow = calculate_heater_power(area, temp_diff)
     HEAT_CAPACITY = 0.28; % Wh/(kg*K)
     
     
-    
-    
-    
     %calculating house_power_loss
     roof_U =    0.16;
     wall_U =    0.20;
