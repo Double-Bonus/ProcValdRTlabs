@@ -21,11 +21,12 @@ recuptr_power_W = calculate_recup_power_f(room_area_m2);
 fprintf("Recuperator power %d wats\n", recuptr_power_W);
 
 time = calculate_break_even_f(recuptr_power_W, EL_PRICE, initial_investment, room_area_m2, temp_diff, false);
-fprintf("Investment breaks evevn after: %0.2f years\n", time);
+fprintf("Investment breaks even after: %0.2f years\n", time);
 
 time_incr = calculate_break_even_f(recuptr_power_W, EL_PRICE, initial_investment, room_area_m2, temp_diff, true);
-fprintf("Investment breaks evevn after: %0.2f years if electricity price is increasing\n", time_incr);
+fprintf("Investment breaks even after: %0.2f years if electricity price is increasing\n", time_incr);
 
-heater_pow_W = calculate_heater_power(area, temp_diff)
+heater_pow_W = calculate_heater_power_f(area, temp_diff);
+fprintf("House will need %0.2f kilowatts heater\n", heater_pow_W/1000);
 
-heater_pow = draw_heater_over_temp_f(area, TEMP_INSIDE);
+draw_heater_over_temp_f(area, TEMP_INSIDE);
