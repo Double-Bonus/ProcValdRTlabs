@@ -27,6 +27,6 @@ function draw_heater_over_temp_f(area, temp_inside)
     grid on;
     title("Relationship between needed heater power and outside temperature"); 
     ylabel("Power, W");
-    xlabel("Temperature, C^O");
+    xlabel("Temperature, ^OC");
     
 end
