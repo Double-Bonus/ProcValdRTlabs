@@ -11,7 +11,7 @@ frequency_wn = sqrt(Pre*Pre+Pim*Pim);       % calc natural frequency
 damping_ratio=(Pre/frequency_wn) ;          % calc damping ratio
 overshoot_prct = (exp(-1*Pre*pi/Pim))*100 ; % calc percent overshoot
 peak_time = pi/Pim;                         % calc peak time 
-Ts = 4/Pre;                                   % calc settling time  (0.02 indicator) 
+Ts = 4/Pre;                                 % calc settling time  (0.02 indicator) 
 %--------------------------------------------------------------------
 step(transfer_fnc); % Plot step response of T(s) using Matlab STEP function
 grid on;
@@ -19,11 +19,11 @@ grid on;
 % Plot step response using derived (part B) expression for C(t)
 t = 0.1:0.01:25;      % define time domain
 
+c0 = step(transfer_fnc, t)'; % MATLAB function
+
 for x = 1:length(t) % calc c(t) for each t [This given function by extra matterial]
     c(x)=1-1.01418*(cos(1.47902*t(x)-(9.59*pi/180)))*(exp((-0.25)*t(x)));
 end
-
-c0 = step(transfer_fnc, t)'; % MATLAB function
 
 syms s
 fun_anl = ilaplace(2.25 / (s^2 + 0.5*s + 2.25) * (1/s));

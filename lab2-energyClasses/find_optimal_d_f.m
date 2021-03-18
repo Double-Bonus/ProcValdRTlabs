@@ -47,5 +47,11 @@ function distace = find_optimal_d_f(roof, wall, floor, window)
     [~,ii] = min(total,[],2); %find min for each of 4 structures
       
     distace = [d_roof(ii(1)), d_wall(ii(2)), d_floor(ii(3)), d_window(ii(4))];
-
+    
+    if 0 % onlly used for getting graph in explanation
+    plot(d_roof, total(1,:))
+    xlabel("Insulation width, m")
+    ylabel("Total price, Eur")
+    title("Roof insulation size analysis")
+    end
 end 
