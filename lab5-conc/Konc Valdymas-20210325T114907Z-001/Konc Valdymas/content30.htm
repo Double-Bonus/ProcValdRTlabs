@@ -1,0 +1,264 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+
+<HEAD>
+	<TITLE>CONTROL SYSTEMS ENGINEERING</TITLE>
+	<meta name="ExpirationDate" content="2007-02-01">
+	<meta name="ReviewDate" content="2006-12-01">
+	<meta name="VersionDate" content="2006-02-17">
+	<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+	<LINK title=gu href="http://www.gu.edu.au/schemes/red/css/colour.css" type=text/css rel=stylesheet>
+	<LINK title=gu href="http://www.gu.edu.au/schemes/global/css/content.css" type=text/css rel=stylesheet>
+	
+			<body background="./../../images/background.gif">
+
+
+	<SCRIPT language=JavaScript>
+	<!--
+	function launchPopWin(page) {
+		PopWin=window.open(page,"popup","status=yes,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=550,height=400");
+		PopWin.focus();
+	}
+	//-->
+	</SCRIPT>
+
+	<SCRIPT language=JavaScript>
+	<!--
+	function MM_reloadPage(init)  {
+		if (init==true) with (navigator) {
+			if ((appName=="Netscape") && (parseInt(appVersion)==4)) {
+				document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage;
+			}
+		}
+		else if (innerWidth != document.MM_pgW || innerHeight != document.MM_pgH)
+			location.reload();
+	}
+	MM_reloadPage(true);
+	// -->
+	</SCRIPT>
+
+<meta name="Title" content="CONTROL SYSTEMS ENGINEERING">
+<meta name="Description" content="CONTROL SYSTEMS ENGINEERING">
+<meta name="Keywords" content="control education, intelligent systems, control, intelligent control,mechatronics, automation, fuzzy logic, neural networks, robotics,robots">
+<meta name="Version" content="1.1">
+<meta name="Author" content="Xin Yang">
+<meta name="AuthorPosition" content="ICSL STUDENT">
+<meta name="Guide" content="Ljubo Vlacic">
+<meta name="GuidePosition" content="Director ICSL">
+<meta name="GuideElement" content="Microelectronic Engineering">
+<meta name="Custodian" content="Ljubo Vlacic">
+<meta name="CustodianPosition" content="Director ICSL">
+<meta name="RightsUse" content="restricted-">
+<meta name="Prerequisites" content="none">
+<meta name="ResourceType" content="Base">
+<link href="../styles/Styles.css" rel="stylesheet" type="text/css">
+
+</HEAD>
+
+
+<BODY>
+
+<!-- Textflip: do not alter this. -->
+<!--#include virtual="/schemes/red/ssi/textflip.ssi" -->
+<!-- End of Textflip. -->
+
+<div align="center">
+  <table>
+    <tr>
+      <td width="13%" bgcolor="#ff0000"><p align="center"><A href="../content3.html" target="content">TUTORIALS</A></P></td>
+      <td width="9%"></td>
+      <td width="13%" bgcolor="#ff0000"><p align="center"><A href="content29.html" target="content">PROBLEM DEFINITION</A></P></td>
+      <td width="9%"></td>
+      <td width="14%" bgcolor="#ff0000"><p align="center"><A href="content31.html" target="content">ANIMATION</A></P></td>
+      <td width="9%"></td>
+    </tr>
+  </table>
+
+<h1><center>SOLUTION</h1></center>
+<body>
+</div>
+
+
+<div align="left">
+<p><span class="infoGreen">>%Frequency Response Ex2</span></p>
+<p><span class="infoGreen">>%The problem definition used in this example is adopted and modified from: Dorf, Richard C. & Robert H. Bishop (1998): "Modern Control Systems" . eighth edition. page 546, </span></p>
+<p><span class="infoGreen">>%Addison Wesley</span></p>
+<p><span class="infoGreen">>%Solution by Xin Yang, Pitt Oppermann and Belinda Schwerin, ICSL (Griffith University)</span></p><br>
+<h2>Part 1)</h2>
+<p>In solving this problem, we made use of the MATLAB command PADE:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [num,den]=pade(T,N) <br>
+This command returns the Nth order approximation of the continuous-time delay exp(-S*T) in transfer function form. With the coefficients of the numerator and denominator stored in the vectors num and den,
+the complete transfer function can be constructed with use of the TF transfer function command.</p>
+<p>Once the series combination of the controller Gc(s), time delay, and tank and output valve transfer functions is calculated, the bode plot can then be generated.
+Here, gain parameters K1 and K2 are both defined as equal to 1.  The range of system gain K for stability can then be found using either the gain margin Gm (MARGIN command) or read directly from the bode plot, where the gain margin is given in decibels. </p>
+</p><br>
+<h2>Part 1)&nbsp; MATLAB CODE</h2>
+<p><span class="infoGreen">%Sketch Bode diagram when K1 = K2 = 1, and investigate stability of the system</span></p>
+<p>clc;</p>
+<p>close all;</p>
+<p>clear all;</p>
+<p>K1=1;</p>
+<p>K2=1;</p>
+<p>T=1.5;<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% define time delay required by conveyor</span></p>
+<p><span class="infoGreen">%------------------------------------------</span></p>
+<p><span class="infoGreen">% Tank and Output Valve G(s)</span></p>
+<p><span class="infoGreen">%------------------------------------------</span></p>
+<p>num=5;<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% define numerator of Tank and output valve</span></p>
+<p>dent=[5 1];<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% define denominator of Tank and output valve</span></p>
+<p>G1=tf(num, dent);<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% create transfer function for Tank and output valve</span></p>
+<p><span class="infoGreen">%-------------------------------</span></p>
+<p><span class="infoGreen">% Controller Gc(s)</span></p>
+<p><span class="infoGreen">%-------------------------------</span></p>
+<p>num1=[K1 K2];<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% define numerator of Controller</span></p>
+<p>dent1=[1 0];<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% define denominator of Controller</span></p>
+<p>Gc=tf(num1, dent1);<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% create transfer function for Controller</span></p>
+<p><span class="infoGreen">%-------------------------</span></p>
+<p><span class="infoGreen">% Conveyor</span></p>
+<p><span class="infoGreen">%-------------------------</span></p>
+<p>[num2, dent2]=pade(T,5);<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% using pade function to find numerator and denominator</span></p>
+<p>Conveyor=tf(num2, dent2);<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% create transfer function for Conveyor</span></p>
+<p>G=G1*Gc*Conveyor;</p>
+<p>figure</p>
+<p>bode(G)<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% make a bode plot</span></p>
+<p>grid on</p>
+<p>title([<span class="infoRed">'System Frequency Response with K1= '</span> , num2str(K1) <span class="infoRed"> ',K2= ' </span>, num2str(K2)])</p>
+<p>[Gm,Pm,Wcg,Wcp]=margin(G);<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% find margins and margin frequencies</span></p>
+<p>K=Gm<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% display K for stability</span></p>
+<br>
+<h2>Part 1)&nbsp; RESULTS</h2>
+<p>K =</p>
+<p>0.2995</p>
+
+<p align="center">
+		<img border="0" src="../images/bode_diagram_for_Q8_part1.gif" width="560" height="420"><br>
+
+<p>From the K value determined by the MATLAB, we can see the system is stable when 0< K <0.2995.
+The K value (gain margin (Gm)) obtained from MATLAB`s MARGIN command, can be converted to decibels by using the
+formula: Gm(dB)=20*log(Gm), giving the same result we observed on the graph.</p><br>
+
+<h2>Part 2)</h2>
+<p>For part 2, we again use the PADE command in MATLAB:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [num,den]=pade(T,n)<br>
+where T is the time delay and N is the order of approximation to determine the numerator and denominator of the time delay function.
+The TF command is then used to form the time delay transfer function.
+Using K1=0.1 and K2=0.04, we then use the BODE command to obtain the bode diagram.
+Finally, the range of K for stability can be determined either from the MARGIN command (gain margin Gm) or directly from the bode plot.</p>
+
+<h2>Part 2)&nbsp; MATLAB CODE</h2>
+<p><span class="infoGreen">%Sketch Bode diagram when K1 = 0.1 and K2 = 0.04, and investigate the stability of the system</span></p>
+<p>clc;</p>
+<p>close all;</p>
+<p>clear all;</p>
+<p>K1=0.1;</p>
+<p>K2=0.04;</p>
+<p>T=1.5;<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% define time delay required by conveyor</span></p>
+<p><span class="infoGreen">%------------------------------------------</span></p>
+<p><span class="infoGreen">% Tank and Output Valve G(s)</span></p>
+<p><span class="infoGreen">%------------------------------------------</span></p>
+<p>num=5;<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% define numerator of Tank and output valve</span></p>
+<p>dent=[5 1];<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% define denominator of Tank and output valve</span></p>
+<p>G1=tf(num, dent);<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% create transfer function for Tank and output valve</span></p>
+<p><span class="infoGreen">%-------------------------------</span></p>
+<p><span class="infoGreen">% Controller Gc(s)</span></p>
+<p><span class="infoGreen">%-------------------------------</span></p>
+<p>num1=[K1 K2];<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% define numerator of Controller</span></p>
+<p>dent1=[1 0];<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% define denominator of Controller</span></p>
+<p>Gc=tf(num1, dent1);<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% create transfer function for Controller</span></p>
+<p><span class="infoGreen">%-------------------------</span></p>
+<p><span class="infoGreen">% Conveyor</span></p>
+<p><span class="infoGreen">%-------------------------</span></p>
+<p>[num2, dent2]=pade(T,5);<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% using pade function to find numerator and denominator</span></p>
+<p>Conveyor=tf(num2, dent2);<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% create transfer function for Conveyor</span></p>
+<p>G=G1*Gc*Conveyor;</p>
+<p>figure</p>
+<p>bode(G)<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% make a bode plot</span></p>
+<p>grid on</p>
+<p>title([<span class="infoRed">'System Frequency Response with K1= '</span> , num2str(K1) <span class="infoRed"> ',K2= ' </span>, num2str(K2)])</p>
+<p>[Gm,Pm,Wcg,Wcp]=margin(G);<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% find margins and margin frequencies</span></p>
+<p>K=Gm<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% display K for stability</span></p>
+<br>
+<h2>Part 2)&nbsp; RESULTS</h2>
+<p>K =</p>
+<p>8.5926</p>
+
+<p align="center">
+		<img border="0" src="../images/bode_diagram_for_Q8_part2.gif" width="560" height="420"><br>
+
+<p>From the K value determined by MATLAB`s MARGIN command, we can see the system is stable when 0< K <8.5926.
+The K value (gain margin (Gm)) obtained can be converted to decibels using the formula: Gm(dB)=20*log(Gm)= 18.68,
+and is the same answer given by the bode plots shown above.</p><br>
+
+<h2>Part 3)</h2>
+<p>For the last part of this problem, we wish to find the maximum value for K2 for which the system will remain stable, given K1=0.
+Here, the ALLMARGIN command allows us to retrieve (amongst other data) system stability information for the chosen value for K2.
+Using the stable field of the returned construct, the system can be identified as either unstable (S.stable=0) or stable (S.stable=1).
+By iterating through K2 values in steps of 0.001, from 0.001 to 2, and checking the value of this field, the value at which the system becomes unstable can be identified.
+The maximum K2 value for which the system is stable then becomes one step size (0.001) less than this gain. </p><br>
+
+<h2>Part 3)&nbsp; MATLAB CODE</h2>
+<p><span class="infoGreen">%When K1 = 0, use the Nyquist criterion to calculate maximum allowable gain K2 for the system to remain stable</span></p>
+<p>clc;</p>
+<p>close all;</p>
+<p>clear all;</p>
+<p>K1=0;</p>
+<p>T=1.5;<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% define time delay required by conveyor</span></p>
+<p><span class="infoGreen">%------------------------------------------</span></p>
+<p><span class="infoGreen">% Tank and Output Valve G(s)</span></p>
+<p><span class="infoGreen">%------------------------------------------</span></p>
+<p>num=5;<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% define numerator of Tank and output valve</span></p>
+<p>dent=[5 1];<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% define denominator of Tank and output valve</span></p>
+<p>G1=tf(num, dent);<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% create transfer function for Tank and output valve</span></p>
+<p><span class="infoGreen">%-------------------------</span></p>
+<p><span class="infoGreen">% Conveyor</span></p>
+<p><span class="infoGreen">%-------------------------</span></p>
+<p>[num2, dent2]=pade(T,5);<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% using pade function to find numerator and denominator</span></p>
+<p>Conveyor=tf(num2, dent2);<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% create transfer function for Conveyor</span></p>
+<p><span class="infoGreen">%-------------------------------</span></p>
+<p><span class="infoGreen">% Controller Gc(s)</span></p>
+<p><span class="infoGreen">%-------------------------------</span></p>
+<p><span class="infoBlue">for</span> K2=0.001:0.001:2</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;num1=[K1 K2];<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% define numerator of Controller</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dent1=[1 0];<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% define denominator of Controller</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Gc=tf(num1, dent1);<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% create transfer function for Controller</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;G=G1*Gc*Conveyor;<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% calculate forward transfer function</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;S = ALLMARGIN(G);<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% retrieve margin and frequency information </span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="infoBlue">if</span> S.Stable==0 <span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% if field stable of allmargin result S is 0 then system is unstable </span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;K2max=K2-0.001<span class="infoGreen">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% for unstable system, K2max (stable) is last K2 value tested </span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="infoBlue">break;</span></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="infoBlue">end</span></p>
+<p><span class="infoBlue">end</span></p>
+
+<h2>Part 3)&nbsp; RESULTS</h2>
+<p>K2max =</p>
+<p>0.1390</p>
+
+<p>From this result, the maximum value for gain K2, with K1=0, which will result in a stable system is 0.139.
+Given the limited accuracy of this program (due to the 0.001 step size), the exact maximum is more accurately described as being
+somewhere between 0.139 and 0.140.</p><br>
+
+
+
+  <table>
+    <tr>
+      <td width="13%" bgcolor="#ff0000"><p align="center"><A href="../content3.html" target="content">TUTORIALS</A></P></td>
+      <td width="9%"></td>
+      <td width="13%" bgcolor="#ff0000"><p align="center"><A href="content29.html" target="content">PROBLEM DEFINITION</A></P></td>
+      <td width="9%"></td>
+      <td width="14%" bgcolor="#ff0000"><p align="center"><A href="content31.html" target="content">ANIMATION</A></P></td>
+      <td width="9%"></td>
+    </tr>
+  </table>
+
+<!-- Footer: Do Not Alter This.
+     This Code can be changed without notice by IntRnet Services.
+     We rely on this whole module remaining unchanged -->
+<!--#include virtual="/schemes/red/ssi/footer.ssi" -->
+<!-- End of Footer Module. Please do not insert content below this -->
+</body>
+</html>
+
+
+
+
+
+
