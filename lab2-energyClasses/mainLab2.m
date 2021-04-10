@@ -19,10 +19,10 @@ TIME_HR = 180 * 24 * 10;
 area = [A*5+150, B*20+700, C*4+200, D*2+30];
 temp_diff = TEMP_INSIDE - TEMP_OUTSIDE;
 
-roof_U =    [0.16, 0.14, 0.12, 0.10, 0.08];% ,0.2314]; %optimal
-wall_U =    [0.20, 0.15, 0.13, 0.11, 0.10];% , 0.2569];
-floor_U =   [0.25, 0.16, 0.14, 0.12, 0.10];% , 0.2527];
-windows_U = [1.60, 1.00, 0.90, 0.80, 0.80];% , 1.8695];
+roof_U =    [0.2314, 0.16, 0.14, 0.12, 0.10, 0.08];% ,0.2314]; %optimal
+wall_U =    [0.2569, 0.20, 0.15, 0.13, 0.11, 0.10];% , 0.2569];
+floor_U =   [0.2527, 0.25, 0.16, 0.14, 0.12, 0.10];% , 0.2527];
+windows_U = [1.8695, 1.60, 1.00, 0.90, 0.80, 0.80];% , 1.8695];
 
 conductivity_q = [0.039, 0.035, 0.031, 0.027];
 
@@ -53,5 +53,5 @@ total = total_build_prices + total_en_price;
 
 distace_meters = find_optimal_d_f(area(1), area(2),area(3),area(4));
 
-back_yr = calculate_break_even_year(total_heat_loss_W/10, total_build_prices, false); % if price isn't incresing
-back_yr2 = calculate_break_even_year(total_heat_loss_W/10, total_build_prices, true); % if price increses
+back_yr = calculate_break_even_year(total_heat_loss_W/10, total_build_prices, false) % if price isn't incresing
+back_yr2 = calculate_break_even_year(total_heat_loss_W/10, total_build_prices, true) % if price increses
