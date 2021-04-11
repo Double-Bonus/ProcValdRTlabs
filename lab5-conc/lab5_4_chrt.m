@@ -2,8 +2,16 @@
 
 clc, clear, close all;
 
-K1 = 1;
-K2 = 1;
+partNR = 2;
+
+if 2 == partNR  
+    K1 = 0.1; 
+    K2 = 0.04; 
+else
+    K1 = 1; 
+    K2 = 1;   
+end
+
 T = 1.5;                                             % define time delay required by conveyor (seconds)
 %------------------------------------------
 % Tank and Output Valve G(s)
@@ -24,30 +32,33 @@ Gc = tf(num1, dent1);                                % create transfer function 
 Conveyor = tf(num2, dent2);                          % create transfer function for Conveyor
 G = G1*Gc*Conveyor;
 figure
-bode(G)                                              % make a bode plot
+
 grid on
-title(['System Frequency Response with K1= ' , num2str(K1) ',K2= ' , num2str(K2)])
-[Gm,Pm,Wcg,Wcp] = margin(G);                         % find margins and margin frequencies
-K = Gm                                               % display K for stability
+
+transf_fnc = G / (G + 1);
+t = 0.01:0.01:100;
+step(transf_fnc, t);
+
+
+
+
+% peak_value = calculate_peak_value(t, transf_fnc, peak_time)
+c1 = step(transf_fnc, t)';
+[rctn_value, rctn_time, rctn_time_plot] = calculate_reaction(t, c1)
+[p_val, p_time] = calculate_peak(t, c1)   
+over_val = calculate_overshoot_prc(t, c1) 
+[s_val, s_time] = get_settling_values(t, c1, p_time) 
 
 
 
 
 
-
-% maksimal? perreguliavim?, reakcijos laik?, nusistov?jimo trukm?, statin? paklaid? ir 
-% maksimalaus perreguliavimo laik? (reakcijai ? vienetin? ??jim?), 
-% kai stiprinimo koeficientai yra tokie kaip pirmoje ir antroje užduotyse. 
 
 
 % static functions
-function p_val = calculate_peak_value(time, func, peak_time)
-    p_val = time(1);
-    for ii = 1:length(func)
-        if peak_time >= time(ii)
-            p_val = func(ii);
-        end
-    end
+function [p_val, p_time] = calculate_peak(time, func)   
+    [p_val, pos_t] = max(func);
+    p_time = time(pos_t);
 end
 
 function [rctn_value, rctn_time, rctn_time_plot] = calculate_reaction(time, func)
@@ -68,11 +79,33 @@ function [rctn_value, rctn_time, rctn_time_plot] = calculate_reaction(time, func
     end
 end
 
-function s_val = get_settling_value(time, func, set_time)
-    s_val = 0;
-    for ii = 1:length(func)
-        if  time(ii) >= set_time
+
+function over_val = calculate_overshoot_prc(time, func)  %NEREIKIA LAIKO VERTES LYG????????
+    max_val = max(func);
+    over_val = (max_val - func(end)) / func(end) * 100;
+
+end
+
+
+
+
+function [s_val, s_time] = get_settling_values(time, func, peak_time)
+    s_val = func(end);
+    s_time = time(end);
+    if(peak_time >= time(end))
+        fprintf("Error procces never settes");
+        return
+    end
+    for start = 1:length(time)
+        if (time(start) > peak_time)
+            break
+        end
+    end
+    
+    for ii = start:length(time)
+        if ( abs(func(ii) - func(end)) <=  func(end) * 0.05 )
             s_val = func(ii);
+            s_time = time(ii);            
             break;
         end
     end
