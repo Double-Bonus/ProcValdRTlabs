@@ -2,7 +2,8 @@
 
 clc, clear, close all;
 
-partNR = 2;
+OFFSET_X = 1.5; % for drawing
+partNR = 1;
 
 if 2 == partNR  
     K1 = 0.1; 
@@ -36,7 +37,7 @@ figure
 grid on
 
 transf_fnc = G / (G + 1);
-t = 0.01:0.01:100;
+t = 0.01:0.01:75;
 step(transf_fnc, t);
 
 
@@ -44,14 +45,32 @@ step(transf_fnc, t);
 
 % peak_value = calculate_peak_value(t, transf_fnc, peak_time)
 c1 = step(transf_fnc, t)';
-[rctn_value, rctn_time, rctn_time_plot] = calculate_reaction(t, c1)
-[p_val, p_time] = calculate_peak(t, c1)   
-over_val = calculate_overshoot_prc(t, c1) 
-[s_val, s_time] = get_settling_values(t, c1, p_time) 
+[reaction_value, reaction_time, reaction_time_plot] = calculate_reaction(t, c1)
+[peak_value, peak_time] = calculate_peak(t, c1)   
+overshoot_prct = calculate_overshoot_prc(t, c1) 
+[settling_value, s_time] = get_settling_values(t, c1, peak_time) 
+fprintf("Static error: %.3f%%", abs(1-c1(end)) *100);
 
 
 
 
+hold on;
+title('model function');
+title(['Reaction to step response with K1= ' , num2str(K1) ', K2= ' , num2str(K2)])
+ylabel('Amplitude');
+xlabel('Time, s');
+
+plot(reaction_time_plot, reaction_value, '.y', 'MarkerSize', 30);
+description = sprintf("Reaction time: %0.3fs", reaction_time);
+text(reaction_time_plot + OFFSET_X, reaction_value, description);
+
+plot(peak_time, peak_value, '.g', 'MarkerSize', 30); % Mp
+description = sprintf("Peak ampl: %0.2f; Peak time: %0.3fs; Overshoot: %2.2f%% ", peak_value, peak_time, overshoot_prct);
+text(peak_time + OFFSET_X, peak_value, description);
+
+plot(s_time, settling_value, '.r', 'MarkerSize', 30); %  setting time ts
+description = sprintf("End of porcess time: %0.2fs", s_time);
+text(s_time + OFFSET_X, settling_value, description);
 
 
 
@@ -62,9 +81,9 @@ function [p_val, p_time] = calculate_peak(time, func)
 end
 
 function [rctn_value, rctn_time, rctn_time_plot] = calculate_reaction(time, func)
-    rctn_time = 0;
+    rctn_time = time(end);
     reaction_time_str = 0;
-    rctn_time_plot = 0;
+    rctn_time_plot = time(end);
     rctn_value = 0;
     last_value = func(length(func));
     for ii = 1:length(func)

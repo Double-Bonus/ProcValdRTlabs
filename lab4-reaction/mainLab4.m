@@ -47,7 +47,7 @@ ylabel('Amplitude');
 ylim([0 2]);
 xlabel('Time, s');
 
-plot(reaction_time_plot, reaction_value, '.y', 'MarkerSize', 30); %ADD  COLOR??????!!!!!!!!!!!!!!!!!!?
+plot(reaction_time_plot, reaction_value, '.y', 'MarkerSize', 30);
 description = sprintf("Reaction time: %0.3f", reaction_time);
 text(reaction_time_plot + OFFSET_X, reaction_value, description);
 
