@@ -1,7 +1,7 @@
 function K = calculate_K_f()
     error_s = 100;
     deng = [8 4];
-    t = 0.01:0.05:100;
+    t = 0:0.05:100;
     for K = 1:200
         numg = K;
         transf_fnc = tf(numg, deng);

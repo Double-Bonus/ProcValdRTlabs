@@ -36,7 +36,7 @@ figure
 grid on
 
 transf_fnc = G / (G + 1);
-t = 0.01:0.01:75;
+t = 0:0.001:75;
 step(transf_fnc, t);
 
 c1 = step(transf_fnc, t)';
