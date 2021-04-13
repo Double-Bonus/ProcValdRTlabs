@@ -1,7 +1,7 @@
 clc, clear, close all;
 
 K1 = 0;
-K2 = 0.05;
+K2 = 0.14;
 T = 1.5;  
 
 num = 5;                                                
