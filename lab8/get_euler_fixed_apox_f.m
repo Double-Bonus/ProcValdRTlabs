@@ -8,6 +8,6 @@ function [y_aprox, t] = get_euler_fixed_apox_f(func_s, h, max_time)
     second_derived_fun = matlabFunction(diff(diff(func_s))); % the expression for y''
     
     for ii = 1:n-1
-        y_aprox(ii+1) = y_aprox(ii) + h * derived_fun(t(ii)) + (0.5 .* h.^2 .*second_derived_fun(ii)) ;
+        y_aprox(ii+1) = y_aprox(ii) + h .* derived_fun(t(ii)) + (0.5 .* h.^2 .*second_derived_fun(ii)) ;
     end
 end
