@@ -8,8 +8,8 @@ T = 1.5;                                             % define time delay require
 %------------------------------------------
 % Tank and Output Valve G(s)
 %------------------------------------------
-num = 5;                                             % define numerator of Tank and output valve
-dent = [5 1];                                        % define denominator of Tank and output valve
+num = 2.1;                                             % define numerator of Tank and output valve
+dent = [2.1 1];                                        % define denominator of Tank and output valve
 G1 = tf(num, dent);                                  % create transfer function for Tank and output valve
 %-------------------------------
 % Controller Gc(s)
@@ -20,7 +20,7 @@ Gc = tf(num1, dent1);                                % create transfer function 
 %-------------------------
 % Conveyor
 %-------------------------
-[num2, dent2] = pade(T,5);                           % using pade function to find numerator and denominator
+[num2, dent2] = pade(T,2.1);                           % using pade function to find numerator and denominator
 Conveyor = tf(num2, dent2);                          % create transfer function for Conveyor
 G = G1*Gc*Conveyor;
 figure
