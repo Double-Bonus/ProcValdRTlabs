@@ -1,4 +1,4 @@
-function [y_aprox, t] = get_euler_mod_apox_f(func_s, h, max_time)
+function [y_aprox, t] = get_euler_aprox_f(func_s, h, max_time)
     t = 0:h:max_time;
     y_aprox = zeros(size(t)); % allocate the result y
     y_aprox(1) = 0;           % the initial y value
@@ -7,6 +7,6 @@ function [y_aprox, t] = get_euler_mod_apox_f(func_s, h, max_time)
     derived_fun = matlabFunction( diff(func_s)); % the expression for y'
       
     for ii = 1:n-1
-        y_aprox(ii+1) = y_aprox(ii) + 0.5.*h.*(derived_fun(t(ii+1)) + derived_fun(t(ii)) );
+        y_aprox(ii+1) = y_aprox(ii) + h .* derived_fun(t(ii));
     end
 end
