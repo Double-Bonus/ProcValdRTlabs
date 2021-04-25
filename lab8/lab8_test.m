@@ -5,8 +5,8 @@ K = 1;
 SIM_TIME = 50;
 h = 0.5;
 t = 0:h:SIM_TIME;
-fun_nr = 1; % Select which function to analize 1, 2, 3
-error_prct = 5;
+fun_nr = 2; % Select which function to analize 1, 2, 3
+error_prct = 1;
 
 syms s % to time domain
 transf_fnk_1 = ilaplace( K / (T*s + 1) * (1/s));
@@ -47,13 +47,22 @@ for fun_nr = 1:3
     legend('Correct function', 'Euler', 'Euler Fixed', 'Euler Modificated', 'Runge-Kutta');
     
     
+    y_array = {y_h_eul, y_h_eul_fix, y_h_eul_mod, y_h_runKut};
+    t_array = {t_h_eul, t_h_eul_fix, t_h_eul_mod, t_h_runKut};
     
-    [rctn_value, rctn_time, rctn_time_plot] = calculate_reaction_f(t_h_eul, y_h_eul)
-    [p_val, p_time] = calculate_peak(t_h_eul, y_h_eul)
-    [s_val, s_time] = get_settling_values(t_h_eul, y_h_eul, p_time)
-%     [t_val, t_time] = calculate_time_constant(t_h_eul, y_h_eul)
-    over_val = calculate_overshoot_prc(y_h_eul)
+    for jj = 2:2
+        fprintf('\nAprox nr: %d', jj);
+        [~, s_time] = calculate_settling_values_f(t_array{jj}, y_array{jj})
+        [~, rctn_time, ~] = calculate_reaction_f(t_array{jj}, y_array{jj})
+        error_val = calculate_stat_error_f(y, y_array{jj})
+    end
+
 end
+
+
+% function [s_val, s_time] = calculate_settling_values(time, func, peak_time)
+% [p_val, p_time] = calculate_peak(time, func)   
+
 
 
 
