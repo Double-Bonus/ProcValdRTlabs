@@ -3,13 +3,10 @@ clc, clear, close all;
 V_0 = 15;
 angle_d = 60;
 time_s = 15;
-H_0 = 25; % Initial height in meters
+H_0 = 0; % Initial height in meters
 
 V_0_Y = sind(angle_d) * V_0;
 V_0_X = cosd(angle_d) * V_0;
-
-drag_c = 0.04;
-
 
 % balls
 table_tennis_R_m = 0.02;
