@@ -1,0 +1,8 @@
+nyquisto:
+https://lpsa.swarthmore.edu/Nyquist/NyquistStability.html
+https://lpsa.swarthmore.edu/Nyquist/NyquistStability.html
+https://www.electrical4u.com/nyquist-stability-criterion/
+
+bode:
+https://pages.mtu.edu/~tbco/cm416/bodestab.html
+https://www.electrical4u.com/bode-plot-gain-margin-phase-margin/
